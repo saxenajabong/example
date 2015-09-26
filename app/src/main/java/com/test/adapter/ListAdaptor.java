@@ -26,6 +26,7 @@ public class ListAdaptor<T extends ListModel> extends BaseAdapter implements Fil
     private List<T> results;
     private List<T> objects;
     private ImageLoader loader;
+    private Filter filter;
 
     public ListAdaptor(Context context, List<T> results) {
         this.context = context;
@@ -86,7 +87,10 @@ public class ListAdaptor<T extends ListModel> extends BaseAdapter implements Fil
 
     @Override
     public Filter getFilter() {
-        return new ListFilter();
+        if (filter == null) {
+            filter = new ListFilter();
+        }
+        return filter;
     }
 
     private static class ViewHolder {
