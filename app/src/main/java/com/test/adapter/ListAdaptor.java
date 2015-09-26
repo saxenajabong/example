@@ -16,7 +16,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.test.R;
 import com.test.volley.ListModel;
 import com.test.volley.VolleyTest;
-import com.test.widget.ListView;
+import com.test.widget.DragListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,12 +102,12 @@ public class ListAdaptor<T extends ListModel> extends BaseAdapter implements Fil
     }
 
     @Override
-    public void onItemDrag(ListView parent, View view, int position, long id) {
+    public void onItemDrag(DragListView parent, View view, int position, long id) {
 
     }
 
     @Override
-    public void onItemDrop(ListView parent, View view, int startPosition, int endPosition, long id) {
+    public void onItemDrop(DragListView parent, View view, int startPosition, int endPosition, long id) {
         if (startPosition >= 0 && startPosition < results.size() && endPosition >= 0 && endPosition < results.size()) {
             T a = results.get(startPosition);
             T b = results.get(endPosition);

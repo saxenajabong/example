@@ -15,49 +15,33 @@ import android.widget.WrapperListAdapter;
 
 import com.test.adapter.DragListAdapter;
 
-public class ListView extends android.widget.ListView {
+public class DragListView extends android.widget.ListView {
 
-    public static interface OnItemDragNDropListener {
-        public void onItemDrag(ListView parent, View view, int position, long id);
-
-        public void onItemDrop(ListView parent, View view, int startPosition, int endPosition, long id);
-    }
-
-    boolean mDragMode;
-
-    WindowManager mWm;
-    int mStartPosition = INVALID_POSITION;
-    int mDragPointOffset; // Used to adjust drag view location
-    int mDragHandler = 0;
-
-    ImageView mDragView;
-
-    OnItemDragNDropListener mDragNDropListener;
+    private boolean mDragMode;
+    private WindowManager mWm;
+    private int mStartPosition = INVALID_POSITION;
+    private int mDragPointOffset; // Used to adjust drag view location
+    private int mDragHandler = 0;
+    private ImageView mDragView;
+    private OnItemDragNDropListener mDragNDropListener;
 
     private void init() {
         mWm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
     }
 
-    public ListView(Context context) {
+    public DragListView(Context context) {
         super(context);
-
         init();
     }
 
-    public ListView(Context context, AttributeSet attrs) {
+    public DragListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         init();
     }
 
-    public ListView(Context context, AttributeSet attrs, int defStyle) {
+    public DragListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
         init();
-    }
-
-    public void setOnItemDragNDropListener(OnItemDragNDropListener listener) {
-        mDragNDropListener = listener;
     }
 
     public void setDragListAdapter(DragListAdapter adapter) {
@@ -65,12 +49,6 @@ public class ListView extends android.widget.ListView {
         setAdapter(adapter);
     }
 
-    /**
-     * If the motion event was inside a handler view.
-     *
-     * @param ev
-     * @return true if it is a dragging move, false otherwise.
-     */
     public boolean isDrag(MotionEvent ev) {
         if (mDragMode) return true;
         if (mDragHandler == 0) return false;
@@ -78,12 +56,14 @@ public class ListView extends android.widget.ListView {
         int x = (int) ev.getX();
         int y = (int) ev.getY();
 
-        int startposition = pointToPosition(x, y);
+        int startPosition = pointToPosition(x, y);
 
-        if (startposition == INVALID_POSITION) return false;
+        if (startPosition == INVALID_POSITION) {
+            return false;
+        }
 
-        int childposition = startposition - getFirstVisiblePosition();
-        View parent = getChildAt(childposition);
+        int childPosition = startPosition - getFirstVisiblePosition();
+        View parent = getChildAt(childPosition);
         View handler = parent.findViewById(mDragHandler);
 
         if (handler == null) return false;
@@ -113,6 +93,7 @@ public class ListView extends android.widget.ListView {
 
         if (action == MotionEvent.ACTION_DOWN && isDrag(ev)) mDragMode = true;
 
+        boolean isDraggingEnabled = true;
         if (!mDragMode || !isDraggingEnabled) return super.onTouchEvent(ev);
 
         switch (action) {
@@ -152,12 +133,6 @@ public class ListView extends android.widget.ListView {
         return true;
     }
 
-    /**
-     * Prepare the drag view.
-     *
-     * @param childIndex
-     * @param y
-     */
     private void startDrag(int childIndex, int y) {
         View item = getChildAt(childIndex);
 
@@ -212,16 +187,9 @@ public class ListView extends android.widget.ListView {
         item.invalidate(); // We have not changed anything else.
     }
 
-    /**
-     * Release all dragging resources.
-     *
-     * @param childIndex
-     */
     private void stopDrag(int childIndex, int endPosition) {
         if (mDragView == null) return;
-
         View item = getChildAt(childIndex);
-
         if (endPosition != INVALID_POSITION) {
             long id = getItemIdAtPosition(mStartPosition);
 
@@ -237,45 +205,30 @@ public class ListView extends android.widget.ListView {
             } else {
                 dndAdapter = (DragListAdapter) adapter;
             }
-
             dndAdapter.onItemDrop(this, item, mStartPosition, endPosition, id);
         }
-
         mDragView.setVisibility(GONE);
         mWm.removeView(mDragView);
-
         mDragView.setImageDrawable(null);
         mDragView = null;
-
         item.setDrawingCacheEnabled(false);
         item.destroyDrawingCache();
-
         item.setVisibility(View.VISIBLE);
-
         mStartPosition = INVALID_POSITION;
-
         invalidateViews(); // We have changed the adapter data, so change everything
     }
 
-    /**
-     * Move the drag view.
-     *
-     * @param x
-     * @param y
-     */
     private void drag(int x, int y) {
         if (mDragView == null) return;
-
         WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) mDragView.getLayoutParams();
         layoutParams.x = x;
         layoutParams.y = y - mDragPointOffset;
-
         mWm.updateViewLayout(mDragView, layoutParams);
     }
 
-    private boolean isDraggingEnabled = true;
+    public interface OnItemDragNDropListener {
+        void onItemDrag(DragListView parent, View view, int position, long id);
 
-    public void setDraggingEnabled(boolean draggingEnabled) {
-        this.isDraggingEnabled = draggingEnabled;
+        void onItemDrop(DragListView parent, View view, int startPosition, int endPosition, long id);
     }
 }
