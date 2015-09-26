@@ -25,6 +25,7 @@ import com.test.R;
 import com.test.volley.ListModel;
 import com.test.volley.ListRequest;
 import com.test.volley.VolleyTest;
+import com.test.widget.ListView;
 
 
 public class ListActivityFragment extends ListFragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -120,8 +121,8 @@ public class ListActivityFragment extends ListFragment implements SwipeRefreshLa
         public void onResponse(ArrayList<ListModel> response) {
             data = response;
             if(getActivity() != null) {
-                adaptor = new ListAdaptor(getActivity(), response);
-                setListAdapter(adaptor);
+                adaptor = new ListAdaptor(getActivity(), response, R.id.list_item_image);
+                ((ListView) getListView()).setDragListAdapter(adaptor);
                 swipeView.setEnabled(true);
                 swipeView.setRefreshing(false);
                 emptyText.setText(getString(R.string.empty_string));

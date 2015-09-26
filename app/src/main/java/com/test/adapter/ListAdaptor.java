@@ -16,22 +16,25 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.test.R;
 import com.test.volley.ListModel;
 import com.test.volley.VolleyTest;
+import com.test.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListAdaptor<T extends ListModel> extends BaseAdapter implements Filterable {
+public class ListAdaptor<T extends ListModel> extends BaseAdapter implements Filterable, DragListAdapter {
 
     private Context context;
     private List<T> results;
     private List<T> objects;
     private ImageLoader loader;
     private Filter filter;
+    private int handler;
 
-    public ListAdaptor(Context context, List<T> results) {
+    public ListAdaptor(Context context, List<T> results, int handler) {
         this.context = context;
         this.results = results;
         objects = results;
+        this.handler = handler;
         loader = VolleyTest.getInstance(context).getImageLoader();
     }
 
@@ -91,6 +94,29 @@ public class ListAdaptor<T extends ListModel> extends BaseAdapter implements Fil
             filter = new ListFilter();
         }
         return filter;
+    }
+
+    @Override
+    public int getDragHandler() {
+        return handler;
+    }
+
+    @Override
+    public void onItemDrag(ListView parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onItemDrop(ListView parent, View view, int startPosition, int endPosition, long id) {
+        if (startPosition >= 0 && startPosition < results.size() && endPosition >= 0 && endPosition < results.size()) {
+            T a = results.get(startPosition);
+            T b = results.get(endPosition);
+            results.remove(b);
+            results.add(startPosition, b);
+            results.remove(a);
+            results.add(endPosition, a);
+            notifyDataSetInvalidated();
+        }
     }
 
     private static class ViewHolder {
