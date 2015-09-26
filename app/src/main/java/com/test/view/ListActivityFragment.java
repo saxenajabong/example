@@ -134,7 +134,7 @@ public class ListActivityFragment extends ListFragment implements SwipeRefreshLa
         public void onErrorResponse(VolleyError error) {
             if(getActivity() != null) {
                 Toast.makeText(getActivity(),
-                        getString(R.string.error) + error.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        getString(R.string.error), Toast.LENGTH_LONG).show();
                 emptyText.setText(getString(R.string.empty_string));
                 swipeView.setEnabled(true);
                 swipeView.setRefreshing(false);
