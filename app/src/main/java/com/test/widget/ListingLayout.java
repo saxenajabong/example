@@ -50,6 +50,7 @@ public class ListingLayout extends RelativeLayout implements ViewTreeObserver.On
 
     @Override
     public void onGlobalLayout() {
+        getViewTreeObserver().removeOnGlobalLayoutListener(this);
         View search = findViewById(R.id.search);
         View list = findViewById(android.R.id.list);
         if (list == null) {
