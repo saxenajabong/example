@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "title": "Fiat",
+      "url": "http://example.com/raw_1.jpg",
+      "price": "Rs. 2,000,000.00"
+    },
+    {
+      "title": "Honda",
+      "url": "http://example.com/raw_2.jpg",
+      "price": "Rs. 2,000,000.00"
+    },
+    {
+      "title": "Maruti",
+      "url": "http://example.com/raw_3.jpg",
+      "price": "Rs. 2,000,000.00"
+    },
+    {
+      "title": "Hyundai",
+      "url": "http://example.com/raw_4.jpg",
+      "price": "Rs. 2,000,000.00"
+    },
+    {
+      "title": "Volkswagon",
+      "url": "http://example.com/raw_5.jpg",
+      "price": "Rs. 2,000,000.00"
+    },
+    {
+      "title": "Skoda",
+      "url": "http://example.com/raw_6.jpg",
+      "price": "Rs. 2,000,000.00"
+    }
+  ]
+}

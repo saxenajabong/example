@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Images</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="image_text">D</string>
+    <string name="empty_string">*** Empty ***</string>
+    <string name="loading">Loading...</string>
+    <string name="error">Error, Please Try Again</string>
+</resources>
