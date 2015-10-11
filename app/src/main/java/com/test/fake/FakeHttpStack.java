@@ -48,10 +48,6 @@ class FakeHttpStack implements HttpStack {
     @Override
     public HttpResponse performRequest(Request<?> request, Map<String, String> stringStringMap)
             throws IOException, AuthFailureError {
-//        try {
-//            Thread.sleep(SIMULATED_DELAY_MS);
-//        } catch (InterruptedException e) {
-//        }
         HttpResponse response
                 = new BasicHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, 200, "OK"));
         ArrayList<Header> headers = defaultHeaders();
